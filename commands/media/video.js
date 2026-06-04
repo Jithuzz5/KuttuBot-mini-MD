@@ -15,9 +15,6 @@ module.exports = {
 
   async execute(sock, msg, args) {
     try {
-      // Get instance-specific config
-      const instanceConfig = config.getConfigFromSocket(sock);
-
       const text = args.join(' ');
       const chatId = msg.key.remoteJid;
 
@@ -89,7 +86,8 @@ module.exports = {
         video: { url: videoData.download },
         mimetype: 'video/mp4',
         fileName: `${(videoData.title || videoTitle || 'video').replace(/[^\w\s-]/g, '')}.mp4`,
-        caption: `*${videoData.title || videoTitle || 'Video'}*\n\n> *_Downloaded by ${instanceConfig.botName}_*`
+        // Fixed: Use config.botName directly instead of instanceConfig
+        caption: `*${videoData.title || videoTitle || 'Video'}*\n\n> *_Downloaded by ${config.botName}_*`
       }, { quoted: msg });
 
     } catch (error) {
