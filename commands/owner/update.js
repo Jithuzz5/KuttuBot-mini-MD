@@ -156,19 +156,32 @@ module.exports = {
     }
 
     try {
-      await extra.reply('🔄 Updating the bot, please wait…');
+      new URL(zipUrl); // validate URL format
+    } catch {
+      return extra.reply('❌ Invalid URL format. Provide a valid ZIP URL.');
+    }
+
+    try {
+      await extra.reply('🔄 Downloading update ZIP, please wait…');
 
       const { copiedFiles } = await updateViaZip(zipUrl);
 
       const summary = copiedFiles.length
-        ? `✅ Update complete. Files updated: ${copiedFiles.length}`
+        ? `✅ Update complete. ${copiedFiles.length} file(s) copied.`
         : '✅ Update complete. No files needed updating.';
 
       await sock.sendMessage(chatId, { text: `${summary}\nRestarting…` }, { quoted: msg });
 
-      // Attempt restart via pm2 if available, else exit to allow panel auto-restart
+      // Restart only THIS process by name if pm2 is managing it; else exit
       try {
-        await run('pm2 restart all');
+        const pm2Name = process.env.npm_package_name || process.env.PM2_HOME ? null : null;
+        // Use process.env.name (pm2 sets this) to restart only current app
+        const pm2AppName = process.env.name;
+        if (pm2AppName) {
+          await run(`pm2 restart ${pm2AppName}`);
+        } else {
+          await run('pm2 restart 0'); // fallback: restart process id 0
+        }
         return;
       } catch {}
 
