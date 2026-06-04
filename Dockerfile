@@ -12,6 +12,8 @@ RUN apk add --no-cache \
     giflib-dev \
     pixman-dev
 
+RUN which ffmpeg && ffmpeg -version
+
 WORKDIR /app
 
 COPY package*.json ./
