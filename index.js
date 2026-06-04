@@ -9,6 +9,7 @@ const { initializeTempSystem } = require('./utils/tempManager');
 const { startCleanup } = require('./utils/cleanup');
 initializeTempSystem();
 startCleanup();
+
 const originalConsoleLog = console.log;
 const originalConsoleError = console.error;
 const originalConsoleWarn = console.warn;
@@ -30,22 +31,31 @@ const forbiddenPatternsConsole = [
   'basekey'
 ];
 
+// Helper to prevent circular reference crashes in console overrides
+const safeStringify = (obj) => {
+  try {
+    return JSON.stringify(obj);
+  } catch (err) {
+    return String(obj);
+  }
+};
+
 console.log = (...args) => {
-  const message = args.map(a => typeof a === 'string' ? a : typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ').toLowerCase();
+  const message = args.map(a => typeof a === 'string' ? a : typeof a === 'object' ? safeStringify(a) : String(a)).join(' ').toLowerCase();
   if (!forbiddenPatternsConsole.some(pattern => message.includes(pattern))) {
     originalConsoleLog.apply(console, args);
   }
 };
 
 console.error = (...args) => {
-  const message = args.map(a => typeof a === 'string' ? a : typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ').toLowerCase();
+  const message = args.map(a => typeof a === 'string' ? a : typeof a === 'object' ? safeStringify(a) : String(a)).join(' ').toLowerCase();
   if (!forbiddenPatternsConsole.some(pattern => message.includes(pattern))) {
     originalConsoleError.apply(console, args);
   }
 };
 
 console.warn = (...args) => {
-  const message = args.map(a => typeof a === 'string' ? a : typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ').toLowerCase();
+  const message = args.map(a => typeof a === 'string' ? a : typeof a === 'object' ? safeStringify(a) : String(a)).join(' ').toLowerCase();
   if (!forbiddenPatternsConsole.some(pattern => message.includes(pattern))) {
     originalConsoleWarn.apply(console, args);
   }
@@ -57,7 +67,6 @@ const {
   default: makeWASocket,
   useMultiFileAuthState,
   DisconnectReason,
-  Browsers,
   fetchLatestBaileysVersion
 } = require('@whiskeysockets/baileys');
 const qrcode = require('qrcode-terminal');
@@ -65,7 +74,6 @@ const config = require('./config');
 const handler = require('./handler');
 const fs = require('fs');
 const path = require('path');
-const zlib = require('zlib');
 const os = require('os');
 
 // Remove Puppeteer cache (if some dependency downloaded Chromium into ~/.cache/puppeteer)
@@ -83,6 +91,7 @@ function cleanupPuppeteerCache() {
     console.error('⚠️ Failed to cleanup Puppeteer cache:', err.message || err);
   }
 }
+
 // Optimized in-memory store with hard limits (Map-based for better memory management)
 const store = {
   messages: new Map(), // Use Map instead of plain object
@@ -176,7 +185,7 @@ const createSuppressedLogger = (level = 'silent') => {
   // Wrap log methods to filter
   const originalInfo = logger.info.bind(logger);
   logger.info = (...args) => {
-    const msg = args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ').toLowerCase();
+    const msg = args.map(a => typeof a === 'string' ? a : safeStringify(a)).join(' ').toLowerCase();
     if (!forbiddenPatterns.some(pattern => msg.includes(pattern))) {
       originalInfo(...args);
     }
@@ -191,31 +200,25 @@ async function startBot() {
   const sessionFolder = `./${config.sessionName}`;
   const sessionFile = path.join(sessionFolder, 'creds.json');
 
-  // Check if sessionID is provided and process KnightBot! format session
-  if (config.sessionID && config.sessionID.startsWith('KuttuBot!')) {
+  // SESSION_ID support from qrkuttubot-md
+  if (config.sessionID) {
     try {
-      const [header, b64data] = config.sessionID.split('!');
+      const sessionData = config.sessionID.replace('SESSION_ID=', '').trim();
 
-      if (header !== 'KnightBot' || !b64data) {
-        throw new Error("❌ Invalid session format. Expected 'KuttuBot!.....'");
+      if (!sessionData) {
+        throw new Error('Invalid SESSION_ID');
       }
 
-      const cleanB64 = b64data.replace('...', '');
-      const compressedData = Buffer.from(cleanB64, 'base64');
-      const decompressedData = zlib.gunzipSync(compressedData);
-
-      // Ensure session folder exists
       if (!fs.existsSync(sessionFolder)) {
         fs.mkdirSync(sessionFolder, { recursive: true });
       }
 
-      // Write decompressed session data to creds.json
-      fs.writeFileSync(sessionFile, decompressedData, 'utf8');
-      console.log('📡 Session : 🔑 Retrieved from KuttuBot Session');
+      const credsData = Buffer.from(sessionData, 'base64');
+      fs.writeFileSync(sessionFile, credsData);
+      console.log('📡 Session : 🔑 Retrieved from SESSION_ID');
 
     } catch (e) {
-      console.error('📡 Session : ❌ Error processing KuttuBot session:', e.message);
-      // Continue with normal QR flow if session processing fails
+      console.error('📡 Session : ❌ Error processing SESSION_ID:', e.message);
     }
   }
 
@@ -347,9 +350,7 @@ async function startBot() {
       if (!msg.message || !msg.key?.id) continue;
 
       const from = msg.key.remoteJid;
-      if (!from) {
-        continue;
-      }
+      if (!from) continue;
 
       // System message filter - ignore broadcast/status/newsletter messages
       if (isSystemJid(from)) {
@@ -366,8 +367,7 @@ async function startBot() {
       if (msg.messageTimestamp) {
         messageAge = Date.now() - (msg.messageTimestamp * 1000);
         if (messageAge > MESSAGE_AGE_LIMIT) {
-          // Message is too old, skip processing
-          continue;
+          continue; // Message is too old, skip processing
         }
       }
 
@@ -375,7 +375,6 @@ async function startBot() {
       processedMessages.add(msgId);
 
       // Store message FIRST (before processing)
-      // from already defined above in DM block check
       if (msg.key && msg.key.id) {
         if (!store.messages.has(from)) {
           store.messages.set(from, new Map());
@@ -383,7 +382,7 @@ async function startBot() {
         const chatMsgs = store.messages.get(from);
         chatMsgs.set(msg.key.id, msg);
 
-        // Cleanup: Keep only last 20 per chat (reduced from 200)
+        // Cleanup: Keep only last 20 per chat
         if (chatMsgs.size > store.maxPerChat) {
           // Remove oldest messages
           const sortedIds = Array.from(chatMsgs.entries())
@@ -427,14 +426,10 @@ async function startBot() {
   });
 
   // Message receipt updates (silently handled, no logging)
-  sock.ev.on('message-receipt.update', () => {
-    // Silently handle receipt updates
-  });
+  sock.ev.on('message-receipt.update', () => {});
 
   // Message updates (silently handled, no logging)
-  sock.ev.on('messages.update', () => {
-    // Silently handle message updates
-  });
+  sock.ev.on('messages.update', () => {});
 
   // Group participant updates (join/leave)
   sock.ev.on('group-participants.update', async (update) => {
@@ -446,7 +441,6 @@ async function startBot() {
     const statusCode = error?.output?.statusCode;
     // Suppress verbose output for common stream errors
     if (statusCode === 515 || statusCode === 503 || statusCode === 408) {
-      // These are usually temporary connection issues, handled by reconnection
       return;
     }
     console.error('Socket error:', error.message || error);
@@ -454,15 +448,13 @@ async function startBot() {
 
   return sock;
 }
+
 // Start the bot
 console.log('🚀 Starting WhatsApp MD Bot...\n');
 console.log(`📦 Bot Name: ${config.botName}`);
 console.log(`⚡ Prefix: ${config.prefix}`);
 const ownerNames = Array.isArray(config.ownerName) ? config.ownerName.join(',') : config.ownerName;
 console.log(`👑 Owner: ${ownerNames}\n`);
-
-// Export store for use in commands
-module.exports = { store };
 
 // Koyeb Health Check Server
 const http = require('http');
@@ -505,6 +497,7 @@ process.on('uncaughtException', (err) => {
   }
   console.error('Uncaught Exception:', err);
 });
+
 process.on('unhandledRejection', (err) => {
   // Handle ENOSPC errors gracefully
   if (err.code === 'ENOSPC' || err.errno === -28 || err.message?.includes('no space left on device')) {
@@ -522,5 +515,6 @@ process.on('unhandledRejection', (err) => {
   }
   console.error('Unhandled Rejection:', err);
 });
+
 // Export store for use in commands
 module.exports = { store };
