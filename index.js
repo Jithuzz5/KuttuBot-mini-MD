@@ -192,12 +192,12 @@ async function startBot() {
   const sessionFile = path.join(sessionFolder, 'creds.json');
 
   // Check if sessionID is provided and process KnightBot! format session
-  if (config.sessionID && config.sessionID.startsWith('KnightBot!')) {
+  if (config.sessionID && config.sessionID.startsWith('KuttuBot!')) {
     try {
       const [header, b64data] = config.sessionID.split('!');
 
       if (header !== 'KnightBot' || !b64data) {
-        throw new Error("❌ Invalid session format. Expected 'KnightBot!.....'");
+        throw new Error("❌ Invalid session format. Expected 'KuttuBot!.....'");
       }
 
       const cleanB64 = b64data.replace('...', '');
@@ -211,10 +211,10 @@ async function startBot() {
 
       // Write decompressed session data to creds.json
       fs.writeFileSync(sessionFile, decompressedData, 'utf8');
-      console.log('📡 Session : 🔑 Retrieved from KnightBot Session');
+      console.log('📡 Session : 🔑 Retrieved from KuttuBot Session');
 
     } catch (e) {
-      console.error('📡 Session : ❌ Error processing KnightBot session:', e.message);
+      console.error('📡 Session : ❌ Error processing KuttuBot session:', e.message);
       // Continue with normal QR flow if session processing fails
     }
   }
