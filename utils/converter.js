@@ -1,29 +1,34 @@
-/**
- * Knight Bot - A WhatsApp Bot
- * Copyright (c) 2024 Professor
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the MIT License.
- * 
- * Credits:
- * - Baileys Library by @adiwajshing
- * - Pair Code implementation inspired by TechGod143 & DGXEON
- */
 const fs = require('fs')
 const path = require('path')
-const { spawn } = require('child_process')
+const { spawn, execSync } = require('child_process')
+
+function getFFmpegPath() {
+  try {
+    return execSync('which ffmpeg').toString().trim()
+  } catch {
+    return process.env.FFMPEG_PATH || '/usr/bin/ffmpeg'
+  }
+}
 
 function ffmpeg(buffer, args = [], ext = '', ext2 = '') {
   return new Promise(async (resolve, reject) => {
     try {
       const tempDir = path.join(__dirname, '../temp')
+
       if (!fs.existsSync(tempDir)) {
         fs.mkdirSync(tempDir, { recursive: true })
       }
-      let tmp = path.join(tempDir, Date.now() + '.' + ext)
-      let out = tmp + '.' + ext2
+
+      const tmp = path.join(tempDir, `${Date.now()}.${ext}`)
+      const out = `${tmp}.${ext2}`
+
       await fs.promises.writeFile(tmp, buffer)
-      spawn('ffmpeg', [
+
+      const ffmpegPath = getFFmpegPath()
+
+      console.log('Using FFmpeg:', ffmpegPath)
+
+      spawn(ffmpegPath, [
         '-y',
         '-i', tmp,
         ...args,
@@ -33,19 +38,25 @@ function ffmpeg(buffer, args = [], ext = '', ext2 = '') {
         .on('close', async (code) => {
           try {
             await fs.promises.unlink(tmp)
-            if (code !== 0) return reject(code)
-            resolve(await fs.promises.readFile(out))
+
+            if (code !== 0) {
+              return reject(new Error(`FFmpeg exited with code ${code}`))
+            }
+
+            const result = await fs.promises.readFile(out)
             await fs.promises.unlink(out)
+
+            resolve(result)
           } catch (e) {
             reject(e)
           }
         })
+
     } catch (e) {
       reject(e)
     }
   })
 }
-
 /**
  * Convert Audio to Playable WhatsApp Audio
  * @param {Buffer} buffer Audio Buffer
