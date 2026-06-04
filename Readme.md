@@ -1,153 +1,218 @@
 <div align="center">
 
-## Kuttu Bot Mini
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00c6ff,100:0072ff&height=200&section=header&text=KuttuBot%20Mini%20MD&fontSize=48&fontColor=ffffff&fontAlignY=38&desc=WhatsApp%20MD%20Bot%20powered%20by%20Baileys&descAlignY=58&descFontColor=ffffffcc" />
 
-[![Made with Baileys](https://img.shields.io/badge/Made%20with-Baileys-00bcd4?style=for-the-badge)](https://github.com/WhiskeySockets/Baileys)
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+<br/>
 
-<img src="utils/bot_image.jpg" alt="Kuttu Bot Mini" width="260">
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Baileys](https://img.shields.io/badge/Baileys-v7-00bcd4?style=for-the-badge)](https://github.com/WhiskeySockets/Baileys)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![Open Source](https://img.shields.io/badge/Open%20Source-✓-brightgreen?style=for-the-badge)](https://github.com/GouthamSER/KuttuBot-mini-MD)
+
+<br/>
+
+<img src="utils/bot_image.jpg" alt="KuttuBot Mini" width="220" style="border-radius:16px"/>
+
+<br/>
+<br/>
+
+> **Fast · Lightweight · Fully Customizable**  
+> A modular WhatsApp MD bot — fork it, brand it, ship it. Free forever.
+
+<br/>
 
 </div>
 
-Kuttu Bot Mini is a WhatsApp MD bot built on top of the **Baileys** library.  
-It’s designed to be fast, lightweight, and easy to customize without touching the core code.  
-This project is **fully open source** — you can modify it, rebrand it, and make your **own bot** from this codebase **free of cost**, without needing any permission from our side.  
-All commands and the overall structure are written in a way that makes customization (bot image, prefix, name, features, etc.) as easy as possible.
-
 ---
 
+## 📦 Command Stats
+
+| Category | Commands |
+|:--------:|:--------:|
+| 🛡️ Admin | 21 |
+| 🤖 AI | 3 |
+| 🌸 Anime | 9 |
+| 🎉 Fun | 13 |
+| ⚙️ General | 20 |
+| 🎬 Media | 9 |
+| 👑 Owner | 14 |
+| ✍️ Text Maker | 18 |
+| 🔧 Utility | 3 |
+| **Total** | **110+** |
+
+---
 
 ## ✨ Features
 
-- **Fully Open Source** – entire codebase is editable; host it anywhere (Heroku, panel, VPS, etc.).  
-- **Easy Customization via Commands** – change **bot image**, **prefix**, **channel/newsletter**, **bot name**, etc. with simple commands.  
-- **Modular Command System** – commands are organized in the `commands` folder for easy editing.  
-- **Optimized for Stability** – RAM‑optimized media handling (streaming, temp cleanup), better session handling via `sessionID` in `config.js`.  
-- **Owner Utilities** – restart, update from ZIP, and more owner‑only tools.
+- 🔓 **Fully Open Source** — edit, rebrand, and host anywhere, no permission needed
+- 🧩 **Modular Command System** — each command is its own file under `commands/`
+- 🎵 **Video → MP3** — convert replied videos to downloadable MP3 with `.mp3` / `.tomp3`
+- 🖼️ **Auto Sticker** — auto-convert images/videos to WhatsApp stickers in groups
+- 🔒 **Group Protection** — antilink, antitag, anti-group mention, mute/unmute
+- 👋 **Welcome / Goodbye** — image-based join/leave messages with profile picture
+- 🤖 **AI Commands** — ChatGPT text, image generation, magic studio
+- 🎨 **Text Maker** — 18 stylized text effects (fire, neon, glitch, matrix, and more)
+- 📲 **Media Downloaders** — YouTube (song/video), TikTok, Instagram, Facebook, Pinterest
+- ⚡ **RAM-Optimized** — streaming media handling + automatic temp file cleanup
+- 🔄 **Auto React** — react to commands or all messages with emoji
+- 🛡️ **Bot Admin Checks** — live metadata fetching for reliable admin operations
 
 ---
 
-### 1. Fork the Repository
+## 🚀 Quick Deploy
+
+### Step 1 — Fork
 
 <div align="center">
 
-<a href="https://github.com/GouthamSER/KuttuBot-mini-MD/fork" target="_blank">
-  <img src="https://img.shields.io/badge/Fork%20Repository-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="Fork on GitHub">
+<a href="https://github.com/GouthamSER/KuttuBot-mini-MD/fork">
+  <img src="https://img.shields.io/badge/Fork%20on%20GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/>
 </a>
 
 </div>
 
-> This creates your own copy of `KuttuBot-mini-MD` under your GitHub account.
+### Step 2 — Get Session ID
 
----
-
-### 2. Get Pair Code
-
-Deploy a small helper to generate a **pair code** and obtain your session string.
+Generate a **pair code** to obtain your session string:
 
 <div align="center">
 
-<a href="https://qrkuttubot-md.koyeb.app/" target="_blank">
-  <img src="https://img.shields.io/badge/Generate-Pair%20Code-blueviolet?style=for-the-badge" alt="Generate Pair Code">
+<a href="https://qrkuttubot-md.koyeb.app/">
+  <img src="https://img.shields.io/badge/Generate%20Pair%20Code-blueviolet?style=for-the-badge"/>
 </a>
 
 </div>
 
-After scanning, you will receive a **session string** starting with:
-
-```text
-jhbssd562387bsdfft67....
-```
-
-Copy that full string and paste it into `config.js`:
+Paste the returned string into `config.js`:
 
 ```js
-sessionID: 'jhbssd562387bsdfft67.....'
+sessionID: 'jhbssd562387bsdfft67....'
 ```
 
-Or set it via the `SESSION_ID` environment variable when hosting.
+Or set via environment variable: `SESSION_ID=jhbssd562387bsdfft67....`
 
----
-
-### 3. Deploy on Panel (Katabump, etc.)
+### Step 3 — Deploy
 
 <div align="center">
 
-<a href="https://dashboard.katabump.com/auth/login#d6b7d6" target="_blank">
-  <img src="https://img.shields.io/badge/Deploy%20on-Katabump-orange?style=for-the-badge" alt="Deploy on Katabump">
+<a href="https://dashboard.katabump.com/auth/login#d6b7d6">
+  <img src="https://img.shields.io/badge/Deploy%20on%20Katabump-orange?style=for-the-badge"/>
+</a>
+&nbsp;
+<a href="https://heroku.com">
+  <img src="https://img.shields.io/badge/Deploy%20on%20Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/>
+</a>
+&nbsp;
+<a href="https://render.com">
+  <img src="https://img.shields.io/badge/Deploy%20on%20Render-46E3B7?style=for-the-badge&logo=render&logoColor=black"/>
+</a>
+&nbsp;
+<a href="https://koyeb.com">
+  <img src="https://img.shields.io/badge/Deploy%20on%20Koyeb-1DC0A0?style=for-the-badge"/>
 </a>
 
 </div>
 
-For a full step‑by‑step deployment tutorial (panels / VPS / Heroku), add or update your YouTube guide here:
+<br/>
 
 <div align="center">
   <a href="https://youtu.be/4PQcn-qqrcE">
-    <img src="https://img.shields.io/badge/Deploy Tutorial-dc3545?style=for-the-badge&logo=youtube" alt="YouTube Link"/>
+    <img src="https://img.shields.io/badge/📺%20Video%20Tutorial-dc3545?style=for-the-badge&logo=youtube"/>
   </a>
 </div>
 
 ---
 
-## 🛠 Local Setup
-
-### 1️⃣ Clone the repository
+## 🖥️ Local Setup (VPS / Ubuntu)
 
 ```bash
+# 1. Clone
 git clone https://github.com/GouthamSER/KuttuBot-mini-MD.git
 cd KuttuBot-mini-MD
-```
 
-### 2️⃣ Install dependencies in Vps / Ubuntu
-
-```bash
+# 2. Install Node.js 20
 sudo apt remove nodejs -y
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
+sudo apt install -y nodejs ffmpeg
+
+# 3. Install dependencies
 npm install
-node -v
-npm -v
-apt install ffmpeg 
-```
 
-### 3️⃣ Configure session
+# 4. Set session (edit config.js or export env var)
+# Option A: paste session string in config.js  →  sessionID: 'your_string_here'
+# Option B: scan QR                            →  sessionID: ''   then run bot
 
-Edit `config.js`:
-
-- **Option A: Use session string**
-
-  ```js
-  sessionID: 'tyerthg365324y56.....'
-  ```
-
-- **Option B: Scan QR**
-
-  ```js
-  sessionID: ''
-  ```
-
-  Run the bot and scan the QR from the terminal.
-
-### 4️⃣ Run the bot
-
-```bash
+# 5. Start
 node index.js
 ```
 
-When the bot starts:
-
-- If `sessionID` is empty, a **QR code** will appear in the terminal – scan it using **Linked Devices** in WhatsApp.  
-- If `sessionID` is set, it will log in using that session string.
+> **QR mode:** leave `sessionID` empty, run the bot, scan the QR from **WhatsApp → Linked Devices**.
 
 ---
 
-## 🌐 Community
+## ⚙️ Configuration (`config.js`)
+
+| Key | Description | Default |
+|-----|-------------|---------|
+| `sessionID` | Session string (or empty for QR) | `''` |
+| `prefix` | Command prefix | `.` |
+| `botName` | Display name of the bot | `KuttuBot Mini` |
+| `ownerNumber` | Your WhatsApp number(s) | `['91XXXXXXXXXX']` |
+| `autoTyping` | Show typing indicator on commands | `true` |
+| `autoReact` | Auto-react to messages | `false` |
+| `selfMode` | Owner-only mode | `false` |
+
+---
+
+## 🎵 Media → MP3
+
+Reply to any **video** (or audio) message and send:
+
+```
+.mp3
+```
+or
+```
+.tomp3
+```
+
+The bot converts it to a downloadable `.mp3` file using FFmpeg and sends it back.
+
+---
+
+## 📁 Project Structure
+
+```
+KuttuBot-mini-MD/
+├── commands/
+│   ├── admin/        # Group management (kick, mute, warn, antilink …)
+│   ├── ai/           # AI features (ChatGPT, image gen)
+│   ├── anime/        # Anime image commands
+│   ├── fun/          # Fun commands (truth, dare, tictactoe …)
+│   ├── general/      # Sticker, TTS, translate, QR …
+│   ├── media/        # YouTube, TikTok, Instagram, MP3 converter …
+│   ├── owner/        # Bot management (restart, update, broadcast …)
+│   ├── textmaker/    # Stylized text effects
+│   └── utility/      # Calc, translate, weather
+├── utils/
+│   ├── converter.js  # FFmpeg wrappers (toAudio, toPTT, toVideo)
+│   ├── tempManager.js
+│   ├── api.js
+│   └── sticker.js
+├── config.js
+├── handler.js
+├── database.js
+└── index.js
+```
+
+---
+
+## 🌐 Community & Support
 
 <div align="center">
 
-<a href="https://t.me/im_goutham_josh" target="_blank">
-  <img src="https://img.shields.io/badge/DM-ME-0088cc?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram">
+<a href="https://t.me/im_goutham_josh">
+  <img src="https://img.shields.io/badge/Telegram-DM%20Me-0088cc?style=for-the-badge&logo=telegram&logoColor=white"/>
 </a>
 
 </div>
@@ -156,73 +221,54 @@ When the bot starts:
 
 ## 🙏 Credits
 
-- **Goutham SER** - Re-edited and Updater Mini Version
-- **Mr Unique Hacker** – Main developer & maintainer  
-- **Baileys** – WhatsApp Web API library (`@whiskeysockets/baileys`)  
-- Other open‑source libraries listed in `package.json`
+| | |
+|---|---|
+| **Goutham SER** | Re-edited & maintains Mini version |
+| **Mr Unique Hacker** | Original developer |
+| **@whiskeysockets/baileys** | WhatsApp Web API |
+| All `package.json` contributors | Open-source libs |
 
 ---
 
-## ☕ Support Me
+## ☕ Support the Developer
 
 <div align="center">
-  
-<a href="upi://pay?pa=gouthamjosh@sbi&pn=Goutham%20Josh&tn=Thanku%20For%20Helping%20Us%20%3A%29&cu=INR"><img src="https://img.shields.io/badge/GPAY-Support%20Developer-FF813F?style=for-the-badge&logo=googlepay&logoColor=white" alt="Google Pay">
+
+<a href="upi://pay?pa=gouthamjosh@sbi&pn=Goutham%20Josh&tn=Thanku%20For%20Helping%20Us%20:)&cu=INR">
+  <img src="https://img.shields.io/badge/GPay-Support%20Dev-FF813F?style=for-the-badge&logo=googlepay&logoColor=white"/>
 </a>
+
+<br/><br/>
+
+<img src="https://i.ibb.co/xtsZZCMg/download.png" alt="Support QR" width="180"/>
+
 </div>
 
-If you find this project helpful and want to support the developer, consider buying me a coffee! Your support helps maintain and improve this open-source project.
+---
+
+## ⚠️ Disclaimer
+
+- Built **for educational purposes only**
+- **NOT** an official WhatsApp product
+- Using third-party bots **may violate WhatsApp ToS** and risk account bans
+- Use **at your own risk** — developers are not responsible for bans or damages
+- **Do not** use for spam, bulk messaging, harassment, or illegal activities
+
+---
+
+## 📄 License
+
+MIT License — Copyright © 2026 **Goutham Josh**
+
+You are free to use, modify, and distribute this project provided you:
+- Keep original license and copyright notices
+- Credit the original authors
+- Do not use for spam or malicious purposes
+
+---
 
 <div align="center">
 
-<img src="https://i.ibb.co/xtsZZCMg/download.png" alt="Supourt Me :)" width="200">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0072ff,100:00c6ff&height=120&section=footer"/>
 
 </div>
-
----
-
-
-## ⚠️ Important Warning
-
-- This bot is created **for educational purposes only**.  
-- This is **NOT** an official WhatsApp bot.  
-- Using third‑party bots **may violate WhatsApp’s Terms of Service** and can lead to your account being **banned**.
-
-> You use this bot **at your own risk**.  
-> The developers are **not responsible** for any bans, issues, or damages resulting from its use.
-
----
-
-## 📝 Legal
-
-- This project is **not affiliated with, authorized, maintained, sponsored, or endorsed** by WhatsApp Inc. or any of its affiliates or subsidiaries.  
-- This is **independent and unofficial software**.  
-- **Do not spam** people using this bot.  
-- **Do not** use this bot for bulk messaging, harassment, or any **illegal activities**.  
-- The developers assume **no liability** and are **not responsible** for any misuse or damage caused by this program.
-
----
-
-## 📄 License (MIT)
-
-This project is licensed under the **MIT License**.
-
-You must:
-
-- Use this software in compliance with **all applicable laws and regulations**.  
-- Keep the **original license and copyright** notices.  
-- **Credit the original authors**.  
-- **Not** use this for spam, abuse, or malicious purposes.
-
----
-
-## 📜 Copyright Notice
-
-Copyright (c) **2026 Goutham Josh**.  
-All rights reserved.
-
-This project contains code from various open‑source projects and AI tools, including but not limited to:
-
-- **Baileys** – MIT License  
-- Other libraries as listed in `package.json`
-
