@@ -99,7 +99,7 @@ git clone https://github.com/GouthamSER/KuttuBot-mini-MD.git
 cd KuttuBot-mini-MD
 ```
 
-### 2️⃣ Install dependencies
+### 2️⃣ Install dependencies in Vps / Ubuntu
 
 ```bash
 sudo apt remove nodejs -y
@@ -108,6 +108,7 @@ sudo apt install -y nodejs
 npm install
 node -v
 npm -v
+apt install ffmpeg 
 ```
 
 ### 3️⃣ Configure session
