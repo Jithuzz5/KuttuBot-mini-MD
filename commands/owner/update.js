@@ -23,7 +23,7 @@ function run(cmd) {
 
 async function extractZip(zipPath, outDir) {
   if (process.platform === 'win32') {
-    const cmd = `powershell -NoProfile -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${outDir.replace(/\\\\/g, '/')}' -Force"`;
+    const cmd = `powershell -NoProfile -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${outDir.replace(/\\/g, '/')}' -Force"`;
     await run(cmd);
     return;
   }
@@ -101,7 +101,7 @@ function copyRecursive(src, dest, ignore = [], relative = '', outList = []) {
       copyRecursive(s, d, ignore, path.join(relative, entry), outList);
     } else {
       fs.copyFileSync(s, d);
-      if (outList) outList.push(path.join(relative, entry).replace(/\\\\/g, '/'));
+      if (outList) outList.push(path.join(relative, entry).replace(/\\/g, '/'));
     }
   }
 }
@@ -179,4 +179,3 @@ module.exports = {
     }
   }
 };
-
