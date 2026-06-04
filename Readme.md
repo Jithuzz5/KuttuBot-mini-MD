@@ -140,8 +140,8 @@ When the bot starts:
 
 <div align="center">
 
-<a href="https://t.me/+im_goutham_josh" target="_blank">
-  <img src="https://img.shields.io/badge/Telegram-0088cc?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram">
+<a href="https://t.me/im_goutham_josh" target="_blank">
+  <img src="https://img.shields.io/badge/DM-ME-0088cc?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram">
 </a>
 
 </div>
@@ -160,18 +160,16 @@ When the bot starts:
 ## ☕ Support Me
 
 <div align="center">
-
-<a href="https://buymeacoffee.com/mruniquehacker" target="_blank">
-  <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20Developer-FF813F?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me a Coffee">
+  
+<a href="upi://pay?pa=gouthamjosh@sbi&pn=Goutham%20Josh&tn=Thanku%20For%20Helping%20Us%20%3A%29&cu=INR"><img src="https://img.shields.io/badge/GPAY-Support%20Developer-FF813F?style=for-the-badge&logo=googlepay&logoColor=white" alt="Google Pay">
 </a>
-
 </div>
 
 If you find this project helpful and want to support the developer, consider buying me a coffee! Your support helps maintain and improve this open-source project.
 
 <div align="center">
 
-<img src="utils/bmc_qr.png" alt="Buy Me a Coffee QR Code" width="200">
+<img src="https://i.ibb.co/xtsZZCMg/download.png" alt="Supourt Me :)" width="200">
 
 </div>
 
