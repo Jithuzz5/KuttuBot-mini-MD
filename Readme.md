@@ -102,7 +102,12 @@ cd KuttuBot-mini-MD
 ### 2️⃣ Install dependencies
 
 ```bash
+sudo apt remove nodejs -y
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
 npm install
+node -v
+npm -v
 ```
 
 ### 3️⃣ Configure session
