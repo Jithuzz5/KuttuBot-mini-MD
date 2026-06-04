@@ -9,6 +9,10 @@
         "dev": "nodemon index.js",
         "install:no-puppeteer": "PUPPETEER_SKIP_DOWNLOAD=true PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install"
     },
+    "engines": {
+        "node": ">=20.0.0",
+        "npm": ">=10.0.0"
+    },
     "keywords": [
         "whatsapp bot",
         "Kuttu Bot Mini",
@@ -16,7 +20,7 @@
         "baileys",
         "md"
     ],
-    "author": "Your Name",
+    "author": "Goutham Josh",
     "license": "MIT",
     "dependencies": {
         "@bochilteam/scraper": "^5.0.1",
