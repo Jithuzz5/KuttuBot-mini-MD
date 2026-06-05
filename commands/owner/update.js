@@ -128,7 +128,10 @@ async function updateViaZip(zipUrl, onProgress) {
 // ── Heroku Platform API build trigger ────────────────────────────────────────
 
 async function triggerHerokuBuild(apiKey, appName) {
-  const body = JSON.stringify({ source_blob: { url: config.updateZipUrl || process.env.UPDATE_ZIP_URL, version: 'update' } });
+  // Heroku Platform API requires tar.gz — ZIP is rejected with "Failed decompressing source code"
+  const tarUrl = config.updateTarUrl || process.env.UPDATE_TAR_URL
+    || (config.updateZipUrl || process.env.UPDATE_ZIP_URL || '').replace(/\.zip$/, '.tar.gz');
+  const body = JSON.stringify({ source_blob: { url: tarUrl, version: 'update' } });
   return new Promise((resolve, reject) => {
     const req = https.request({
       hostname: 'api.heroku.com',
