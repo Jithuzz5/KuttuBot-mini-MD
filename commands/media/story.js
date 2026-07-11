@@ -23,6 +23,20 @@ function extractUniqueMedia(mediaData) {
   return uniqueMedia;
 }
 
+// IG CDN urls have no file extension, so extension/type-field guessing is unreliable.
+// Ask the CDN directly what it is.
+async function detectMediaType(mediaUrl) {
+  try {
+    const res = await fetch(mediaUrl, { method: 'HEAD' });
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.startsWith('video/')) return 'video';
+    if (contentType.startsWith('image/')) return 'image';
+  } catch (e) {
+    // HEAD blocked/failed, fall through to extension guess below
+  }
+  return null;
+}
+
 module.exports = {
   name: 'story',
   aliases: ['igstory', 'storydl'],
@@ -86,7 +100,11 @@ module.exports = {
           const media = mediaToDownload[i];
           const mediaUrl = media.url;
 
-          const isVideo = /\.(mp4|mov|avi|mkv|webm)$/i.test(mediaUrl) || media.type === 'video';
+          // Ask the CDN what it actually is first; extension/type-field guessing is unreliable for stories
+          const detectedType = await detectMediaType(mediaUrl);
+          const isVideo = detectedType
+            ? detectedType === 'video'
+            : (/\.(mp4|mov|avi|mkv|webm)$/i.test(mediaUrl) || media.type === 'video');
 
           if (isVideo) {
             await sock.sendMessage(chatId, {
