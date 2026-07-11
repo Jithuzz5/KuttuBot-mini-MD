@@ -74,7 +74,8 @@ module.exports = {
         /https?:\/\/(?:www\.)?instagr\.am\//,
         /https?:\/\/(?:www\.)?instagram\.com\/p\//,
         /https?:\/\/(?:www\.)?instagram\.com\/reel\//,
-        /https?:\/\/(?:www\.)?instagram\.com\/tv\//
+        /https?:\/\/(?:www\.)?instagram\.com\/tv\//,
+        /https?:\/\/(?:www\.)?instagram\.com\/stories\//
       ];
       
       const isValidUrl = instagramPatterns.some(pattern => pattern.test(text));
